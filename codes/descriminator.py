@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 
 
-class DescriminatorT(nn.Module):
+class DiscriminatorT(nn.Module):
     """
     Time domain discriminator, used to distinguish between real and generated ECG signals.
     Input:
@@ -12,7 +12,7 @@ class DescriminatorT(nn.Module):
         The discrimination result represents the probability that the input signal is a true signal.
     """
     def __init__(self, input_channels, signal_length):
-        super(DescriminatorT, self).__init__()
+        super(DiscriminatorT, self).__init__()
         self.model = nn.Sequential(
             Conv1DBlock(input_channels, 64, kernel_size=3, stride=2, padding='same', activation='leaky_relu'),
             Conv1DBlock(64, 128, kernel_size=3, stride=2, padding='same', activation='leaky_relu'),
@@ -25,7 +25,7 @@ class DescriminatorT(nn.Module):
         return self.model(x)
 
 
-class DescriminatorF(nn.Module):
+class DiscriminatorF(nn.Module):
     """
     Frequency domain discriminator, used to distinguish the spectrum of real and generated ECG signals.
     Input:
@@ -35,7 +35,7 @@ class DescriminatorF(nn.Module):
         The discrimination result indicates that the input spectrogram is based on the probability of the real signal.
     """
     def __init__(self, input_channels, spectrogram_length):
-        super(DescriminatorF, self).__init__()
+        super(DiscriminatorF, self).__init__()
         self.model = nn.Sequential(
             Conv1DBlock(input_channels, 64, kernel_size=3, stride=2, padding='same', activation='leaky_relu'),
             Conv1DBlock(64, 128, kernel_size=3, stride=2, padding='same', activation='leaky_relu'),
