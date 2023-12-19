@@ -39,33 +39,33 @@ tflib.Checkpoint(dict(Gen_PPG2ECG=Gen_PPG2ECG), model_dir).restore()
 print("model loaded successfully")
 
 
-# 加载数据
-file_path = r'C:\Users\曹淮德\Desktop\study\Huang\ppg2ecg-cardiogan\codes\part_1_PPG_beats_P2P_Aug_2022.csv'
+# Load data
+file_path = r'part_1_PPG_beats_P2P_Aug_2022.csv'
 x_ppg = np.loadtxt(file_path, delimiter=',')
 
-# 重采样到 128 Hz
-# 注意：cv2.resize 返回的是二维数组，我们需要将其转换为一维数组
+# Resample to 128Hz
+# Note: cv2.resize returns a two-dimensional array, which we need to convert to a one-dimensional array.
 x_ppg_resized = cv2.resize(x_ppg, (ppg_segment_size, 1), interpolation=cv2.INTER_LINEAR).flatten()
 
-# 过滤数据
+# Filter data
 x_ppg_filtered = preprocessing.filter_ppg(x_ppg_resized, ppg_sampling_freq)
 
-# 调整数据形状以符合模型输入要求
+# Adjust data shape to match model input requirements
 x_ppg_normalized = np.reshape(x_ppg_filtered, (-1, 512))
 
-# 数据归一化
+# Data normalization
 x_ppg_normalized = skp.minmax_scale(x_ppg_normalized, feature_range=(-1, 1), axis=1)
 
-# 使用模型进行预测
+# Use model to predict
 x_ecg = sample_P2E(x_ppg_normalized, Gen_PPG2ECG)
 
-# 绘制 ECG 波形图
-plt.figure(figsize=(10, 4))  # 设置图形的大小
-plt.plot(x_ecg[0])       # 绘制波形图
-plt.title('ECG Waveform')    # 设置标题
-plt.xlabel('Time')           # 设置 X 轴标签
-plt.ylabel('Amplitude')      # 设置 Y 轴标签
-plt.grid(True)               # 显示网格
+# Plotting ECG Waveforms
+plt.figure(figsize=(10, 4))  # Graph size
+plt.plot(x_ecg[0])       # Draw waveform
+plt.title('ECG Waveform')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
 plt.show()  
 # load the data: x_ppg = np.loadtxt()
 # make sure loaded data is a numpy array: x_ppg = np.array(x_ppg)
