@@ -6,5 +6,3 @@ We use dataset from:
 https://physionet.org/content/bidmc/1.0.0/
 
 Weights can be used on the generator: https://github.com/pritamqu/ppg2ecg-cardiogan/releases/download/model_weights/cardiogan_ppg2ecg_generator.zip
-
-And try test_cardiogan.py to test the model.
