@@ -34,7 +34,7 @@ criterion = nn.BCELoss()
 # Train
 num_epochs = 10  # train round
 for epoch in range(num_epochs):
-    for i, data in enumerate(dataloader):  # 假设dataloader是您的数据加载器
+    for i, data in enumerate(dataloader):
         # Real data and label
         real_data = data['ecg'].to(device)
         real_labels = torch.ones(real_data.size(0), 1).to(device)
