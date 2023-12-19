@@ -4,12 +4,26 @@ import torch.optim as optim
 from discriminator import DiscriminatorT, DiscriminatorF
 from module import Generator
 import preprocessing
+import scipy.io
 
-ppg_data = ...
-ecg_data = ...
-sampling_rate = 1000
+mat_data = scipy.io.loadmat('../dataset/bidmc_data.mat', struct_as_record=False, squeeze_me=True)
+data_array = mat_data['data']
 
-dataloader = preprocessing.get_dataloader(ppg_data, ecg_data, sampling_rate)
+# Initialize data list
+ppg_data_list = []
+ecg_data_list = []
+
+# Extract ppg and ecg data
+for record in data_array:
+    if hasattr(record, 'ppg') and hasattr(record.ppg, 'v') and len(record.ppg.v) >= 1000:
+        ppg_data = record.ppg.v[:500]
+        ppg_data_list.append(ppg_data)
+    if hasattr(record, 'ekg') and hasattr(record.ekg, 'v') and len(record.ekg.v) >= 1000:
+        ekg_data = record.ekg.v[:500]
+        ecg_data_list.append(ekg_data)
+sampling_rate = 125
+
+dataloader = preprocessing.get_dataloader(ppg_data_list, ecg_data_list, sampling_rate)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
