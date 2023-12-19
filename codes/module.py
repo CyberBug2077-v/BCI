@@ -21,6 +21,9 @@ class Generator(nn.Module):
         self.kernel_sizes = kernel_sizes
         self.input_channels = input_channels
         self.output_channels = output_channels
+        self.downsample_layers = self._downsample_layers()
+        self.upsample_layers = self._upsample_layers()
+        self.downsample_layers = self._downsample_layers()
 
     def _downsample_layers(self):
         layers = nn.ModuleList()
